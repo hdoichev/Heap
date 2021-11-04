@@ -93,6 +93,9 @@ public class Heap<T:Comparable> {
             _siftUp(start: (start - 1) / 2, end:start, storage: storage)
         }
     }
+    public func siftDown() {
+        siftDown(root: 0, end: _h.count - 1)
+    }
     func siftDown(root: Int, end: Int)->Void{
         _h.withUnsafeMutableBufferPointer { (storage) in
             _siftDown(root: root, end: end, storage: storage)
