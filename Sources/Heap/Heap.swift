@@ -16,7 +16,7 @@ public protocol IndexAssignable: Comparable {
 public class Heap<T:Comparable> {
     public typealias Storage = ContiguousArray<T>
     var _compare:(T,T)->Bool = (>)
-    var _h = Storage()
+    public var _h = Storage()
     var count:Int { return _h.count }
     
     public var top:T? { return _h.first }
@@ -180,5 +180,11 @@ public class DHeap<T: IndexAssignable> : Heap<T> {
         storage.swapAt(a, b)
         storage[a].assignedIndex = a
         storage[b].assignedIndex = b
+    }
+}
+
+extension Heap: CustomStringConvertible {
+    public var description: String {
+        "\(_h.count): \(_h)"
     }
 }
