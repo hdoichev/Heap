@@ -52,9 +52,6 @@ public class Heap<T:Comparable> {
         }
     }
     public func heapifySiftUp(){
-        //        for i in 1..<(_h.count){
-        //            siftUp(start:(i - 1) / 2, end: i)
-        //        }
         _h.withUnsafeMutableBufferPointer { (storage) in
             for i in 1..<storage.count{
                 _siftUp(start:(i - 1) / 2, end: i, storage: storage)
@@ -68,21 +65,11 @@ public class Heap<T:Comparable> {
                 _siftDown(root:i, end: end, storage: storage)
             }
         }
-        //        for i in (0...end/2).reversed(){
-        //            siftDown(root:i, end: end)
-        //        }
     }
     private func siftUp(start:Int, end:Int)->Void{
         _h.withUnsafeMutableBufferPointer { (storage) in
             _siftUp(start: start, end: end, storage: storage)
         }
-        //        if start < 0 || start >= end {
-        //            return
-        //        }
-        //        if _compare(_h[end], _h[start]) {
-        //            _h.swapAt(start, end)
-        //            siftUp(start: (start - 1) / 2, end:start)
-        //        }
     }
     func _siftUp(start:Int, end:Int, storage: UnsafeMutableBufferPointer<T>){
         if start < 0 || start >= end {
@@ -100,17 +87,6 @@ public class Heap<T:Comparable> {
         _h.withUnsafeMutableBufferPointer { (storage) in
             _siftDown(root: root, end: end, storage: storage)
         }
-        //        var b = (root * 2) + 1
-        //        if b > end { return }
-        //        if end > b {
-        //            if _compare(_h[b+1], _h[b]) {
-        //                b += 1
-        //            }
-        //        }
-        //        if _compare(_h[b], _h[root]) {
-        //            _h.swapAt(b, root)
-        //            siftDown(root:b, end:end)
-        //        }
     }
     func _siftDown(root:Int, end:Int, storage:UnsafeMutableBufferPointer<T>)->Void{
         var b = (root * 2) + 1
@@ -126,20 +102,6 @@ public class Heap<T:Comparable> {
             _siftDown(root:b, end:end, storage: storage)
         }
     }
-    //    private func siftDown(start:Int, end:Int)->Void{
-    //        let b = start * 2
-    //        if b >= end { return }
-    //        var i = 1
-    //        if (end - b) > 1 {
-    //            if _compare(_h[b+2], _h[b+1]) {
-    //                i = 2
-    //            }
-    //        }
-    //        if _compare(_h[b+i], _h[start]) {
-    //            _h.swapAt(b+i, start)
-    //            siftDown(start:b+i, end:end)
-    //        }
-    //    }
     func swap(_ a: Int, _ b: Int, _ storage: UnsafeMutableBufferPointer<T>) {
         storage.swapAt(a, b)
     }
