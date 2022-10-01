@@ -8,23 +8,25 @@
 
 import Foundation
 
-public protocol IndexAssignable: Comparable {
-    var assignedIndex: Int { get set }
-}
 /**
  */
 public class Heap<T:Comparable> {
     public typealias Storage = ContiguousArray<T>
     var _compare:(T,T)->Bool = (>)
-    public var _h = Storage()
-    var count:Int { return _h.count }
-    
+    //
+    var _h = Storage()
+    /// return the count of elements in the Heap
+    public var count:Int { return _h.count }
+    /// Access the internal storage.
+    public var storage: Storage { return _h }
+    /// Access the top element.
     public var top:T? { return _h.first }
-    
+    /// Create a Heap with default comparitor '>'.
     public init(_ compare:@escaping ((T, T)->Bool) = (>)){
         _compare = compare
         
     }
+    /// Create a Heap with a given source and default compare operator '>'
     public init(_ h:Storage, _ compare:@escaping ((T, T)->Bool) = (>)){
         _compare = compare
         _h = h
@@ -34,7 +36,7 @@ public class Heap<T:Comparable> {
     public convenience init(_ h:Array<T>, _ compare:@escaping ((T, T)->Bool) = (>)){
         self.init(Storage(h), compare)
     }
-    ///
+    /// Access storage using a closure.
     public func accessStorage(_ block: (inout Storage)->Void) {
         block(&_h)
     }
@@ -44,6 +46,7 @@ public class Heap<T:Comparable> {
         let end = _h.count-1
         siftUp(start: (end - 1) / 2, end: end)
     }
+    /// Pop the top most element and update the heap order.
     public func pop(){
         if _h.count > 0 {
             _h.swapAt(0, _h.count-1)
@@ -51,6 +54,7 @@ public class Heap<T:Comparable> {
             siftDown(root:0, end:_h.count-1)
         }
     }
+    /// Heapify from the bottom up
     public func heapifySiftUp(){
         _h.withUnsafeMutableBufferPointer { (storage) in
             for i in 1..<storage.count{
@@ -58,6 +62,7 @@ public class Heap<T:Comparable> {
             }
         }
     }
+    /// Heapify from the top down.
     public func heapifySiftDown(){
         let end = _h.count - 1
         _h.withUnsafeMutableBufferPointer { (storage) in
@@ -66,11 +71,13 @@ public class Heap<T:Comparable> {
             }
         }
     }
+    /// Heapify a range
     private func siftUp(start:Int, end:Int)->Void{
         _h.withUnsafeMutableBufferPointer { (storage) in
             _siftUp(start: start, end: end, storage: storage)
         }
     }
+    /// Implementation of the 'siftUp' process.
     func _siftUp(start:Int, end:Int, storage: UnsafeMutableBufferPointer<T>){
         if start < 0 || start >= end {
             return
@@ -80,14 +87,17 @@ public class Heap<T:Comparable> {
             _siftUp(start: (start - 1) / 2, end:start, storage: storage)
         }
     }
+    /// Sift down.
     public func siftDown() {
         siftDown(root: 0, end: _h.count - 1)
     }
+    /// Sift down with range.
     func siftDown(root: Int, end: Int)->Void{
         _h.withUnsafeMutableBufferPointer { (storage) in
             _siftDown(root: root, end: end, storage: storage)
         }
     }
+    /// Implementation of 'siftDown' process.
     func _siftDown(root:Int, end:Int, storage:UnsafeMutableBufferPointer<T>)->Void{
         var b = (root * 2) + 1
         if b > end { return }
@@ -102,48 +112,12 @@ public class Heap<T:Comparable> {
             _siftDown(root:b, end:end, storage: storage)
         }
     }
+    /// 
     func swap(_ a: Int, _ b: Int, _ storage: UnsafeMutableBufferPointer<T>) {
         storage.swapAt(a, b)
     }
 }
 
-public class DHeap<T: IndexAssignable> : Heap<T> {
-    public func siftDown(root: Int) {
-        siftDown(root: root, end: _h.count - 1)
-    }
-    override func _siftUp(start:Int, end:Int, storage: UnsafeMutableBufferPointer<T>){
-        if start < 0 || start >= end {
-            return
-        }
-        storage[start].assignedIndex = start
-        storage[end].assignedIndex = end
-        if _compare(storage[end], storage[start]) {
-            swap(start, end, storage)
-            _siftUp(start: (start - 1) / 2, end:start, storage: storage)
-        }
-    }
-    override func _siftDown(root:Int, end:Int, storage: UnsafeMutableBufferPointer<T>)->Void{
-        var b = (root * 2) + 1
-        if b > end { return }
-        storage[root].assignedIndex = root
-        storage[b].assignedIndex = b
-        if end > b {
-            if _compare(storage[b+1], storage[b]) {
-                b += 1
-                storage[b].assignedIndex = b
-            }
-        }
-        if _compare(storage[b], storage[root]) {
-            swap(b, root, storage)
-            _siftDown(root:b, end:end, storage: storage)
-        }
-    }
-    override func swap(_ a: Int, _ b: Int, _ storage: UnsafeMutableBufferPointer<T>) {
-        storage.swapAt(a, b)
-        storage[a].assignedIndex = a
-        storage[b].assignedIndex = b
-    }
-}
 
 extension Heap: CustomStringConvertible {
     public var description: String {
