@@ -8,14 +8,14 @@
 
 import Foundation
 
-/**
- */
+///
+///
 public class Heap<T:Comparable> {
     public typealias Storage = ContiguousArray<T>
     var _compare:(T,T)->Bool = (>)
     //
     var _h = Storage()
-    /// return the count of elements in the Heap
+    /// The count of elements in the Heap
     public var count:Int { return _h.count }
     /// Access the internal storage.
     public var storage: Storage { return _h }
@@ -88,8 +88,8 @@ public class Heap<T:Comparable> {
         }
     }
     /// Sift down.
-    public func siftDown() {
-        siftDown(root: 0, end: _h.count - 1)
+    public func siftDown(root: Int = 0) {
+        siftDown(root: root, end: _h.count - 1)
     }
     /// Sift down with range.
     func siftDown(root: Int, end: Int)->Void{

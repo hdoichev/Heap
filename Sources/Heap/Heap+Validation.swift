@@ -10,6 +10,10 @@ import Foundation
 /// Heap validation functionality.
 /// Detect if Heap is corrupted and also provide the 'path' (within the heap) where the corrupted item is detected.
 extension Heap {
+    /// Validate the Heap.
+    ///  - Return Bool (true if valid
+    ///           [Int] the 'path' within the heap storage where invalid element was detected.
+    ///
     func validate()->(Bool,[Int]){
         var errPath = [Int]()
         let isValid = probeForValidity(root: 0, end: _h.count-1, errPath: &errPath)
