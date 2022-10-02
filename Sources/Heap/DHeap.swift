@@ -19,7 +19,7 @@ public class DHeap<T: IndexAssignable> : Heap<T> {
     }
     ///
     override func _siftUp(start:Int, end:Int, storage: UnsafeMutableBufferPointer<T>){
-        guard start >= 0 && start < end && end < _h.count else { return }
+        guard start >= 0 && start < end else { return }
 
         storage[start].assignedIndex = start
         storage[end].assignedIndex = end
