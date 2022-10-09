@@ -79,9 +79,7 @@ public class Heap<T:Comparable> {
     }
     /// Implementation of the 'siftUp' process.
     func _siftUp(start:Int, end:Int, storage: UnsafeMutableBufferPointer<T>){
-        if start < 0 || start >= end {
-            return
-        }
+        guard start >= 0 && start < end else { return }
         if _compare(storage[end], storage[start]) {
             storage.swapAt(start, end)
             _siftUp(start: (start - 1) / 2, end:start, storage: storage)
@@ -108,7 +106,6 @@ public class Heap<T:Comparable> {
         }
         if _compare(storage[b], storage[root]) {
             swap(b, root, storage)
-//            storage.swapAt(b, root)
             _siftDown(root:b, end:end, storage: storage)
         }
     }

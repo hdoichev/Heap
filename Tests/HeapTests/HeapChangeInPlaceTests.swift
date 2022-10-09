@@ -19,7 +19,7 @@ final class HeapChangeInPlaceTests: XCTestCase {
         let v = MyHeap(source)
         XCTAssertEqual(100, v.top, "Top is 100")
         v.dumpHeap()
-        print("Valid(pushed): ",v.validate())
+        print("Valid: ",v.validate())
     }
     func testHeap_Push() throws {
         let v = MyHeap(<)
@@ -28,13 +28,13 @@ final class HeapChangeInPlaceTests: XCTestCase {
         }
         XCTAssertEqual(1, v.top, "Top is 1")
         v.dumpHeap()
-        print("Valid(pushed): ",v.validate())
+        print("Valid: ",v.validate())
         
         v._h[0] += 555
         v.siftDown()
         XCTAssertEqual(2, v.top, "Top is 2")
         v.dumpHeap()
-        print("Valid(pushed): ",v.validate())
+        print("Valid: ",v.validate())
 
     }
 }

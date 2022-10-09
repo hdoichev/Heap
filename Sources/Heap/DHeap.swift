@@ -44,23 +44,12 @@ public class DHeap<T: IndexAssignable> : Heap<T> {
     public enum Direction {
         case Up, Down
     }
-    public func update(at: Int, direction: Direction = .Down,with closure: (inout T)->Void) {
+    public func update(at: Int, direction: Direction = .Down, with closure: (inout T)->Void) {
         guard at >= 0 && at < _h.count else { return }
         closure(&_h[at])
         switch direction {
         case .Up: heapifySiftDown() // siftUp(start: 0, end: at)
         case .Down: siftDown(root: at)
-        }
-    }
-    ///
-    override func _siftUp(start:Int, end:Int, storage: UnsafeMutableBufferPointer<T>){
-        guard start >= 0 && start < end else { return }
-
-//        storage[start].assignedIndex = start
-//        storage[end].assignedIndex = end
-        if _compare(storage[end], storage[start]) {
-            swap(start, end, storage)
-            _siftUp(start: (start - 1) / 2, end:start, storage: storage)
         }
     }
     override func _siftDown(root:Int, end:Int, storage: UnsafeMutableBufferPointer<T>)->Void{
