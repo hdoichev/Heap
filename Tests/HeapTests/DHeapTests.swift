@@ -35,22 +35,23 @@ final class DHeapTests: XCTestCase {
         let v = MyDHeap(source)
         XCTAssertEqual(100, v.top?._k, "Top is 100")
         v.dumpHeap()
-        print("Valid(pushed): ",v.validate())
+        print("Valid: ",v.validate())
     }
     func testHeap_UpdateTopInPlace() throws {
         let v = MyDHeap(source, <)
 
         XCTAssertEqual(1, v.top?._k, "Top is 1")
         v.dumpHeap()
-        print("Valid(pushed): ",v.validate())
+        print("Valid: ",v.validate())
         
         v._h[0]._k += 555
         v.siftDown()
         XCTAssertEqual(2, v.top?._k, "Top is 2")
         v.dumpHeap()
-        print("Valid(pushed): ",v.validate())
+        print("Valid: ",v.validate())
         
     }
+    
     func testHeap_UpdateMiddleInPlace() throws {
 //        let v = MyDHeap(source, <)
         let v = MyDHeap([A(1), A(2), A(3), A(4), A(5)], <)
@@ -61,6 +62,20 @@ final class DHeapTests: XCTestCase {
         }
         XCTAssertEqual(1, v.top?._k, "Top is 1")
         v.dumpHeap()
-        print("Valid(pushed): ",v.validate())
+        print("Valid: ",v.validate())
+    }
+    
+    func testHeap_UpdateMiddleInPlace_OppositeDirection() throws {
+        //        let v = MyDHeap(source, <)
+        let v = MyDHeap([A(1,1), A(2,2), A(3,3), A(4,4), A(5,5)], <)
+        // update the element at (index) and then update the heap - siftUp from 'at'
+        // This will keep the heap valid, by updating just a portion of the heap.
+        v.update(at: 4, direction: .Up){
+            $0._k = 0
+        }
+        v.dumpHeap()
+        XCTAssertEqual(0, v.top?._k, "Top is 0")
+        print("Valid: ",v.validate())
+        XCTAssertTrue(v.validate().0, "The Heap has to be valid")
     }
 }

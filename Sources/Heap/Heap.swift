@@ -72,7 +72,7 @@ public class Heap<T:Comparable> {
         }
     }
     /// Heapify a range
-    private func siftUp(start:Int, end:Int)->Void{
+    public func siftUp(start:Int, end:Int)->Void{
         _h.withUnsafeMutableBufferPointer { (storage) in
             _siftUp(start: start, end: end, storage: storage)
         }
